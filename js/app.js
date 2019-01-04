@@ -103,6 +103,19 @@ Player.prototype.update = function(dt){
   if (this.direction === DIRECTIONS.DOWN) {
     this.y = this.y + this.velocity * dt;
   }
+
+  if (this.x < -10) {
+    this.x = -10;
+  }
+  if (this.x > CANVAS_HEIGHT - Player.HEIGHT) {
+    this.x = CANVAS_HEIGHT - Player.HEIGHT;
+  }
+  if (this.y < -10) {
+    this.y = -10;
+  }
+  if (this.y > CANVAS_WIDTH - Player.WIDTH + 20) {
+    this.y = CANVAS_WIDTH - Player.WIDTH + 20;
+  }
 };
 
 
@@ -124,12 +137,14 @@ Player.prototype.render = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(0, 1, {
-  velocity: 50,
+  velocity: 5,
   direction: DIRECTIONS.RIGHT
 }),
 new Enemy(0, 2, {
+  velocity: 5,
   direction: DIRECTIONS.RIGHT
 }),new Enemy(0, 3, {
+  velocity: 5,
   direction: DIRECTIONS.RIGHT
 })];
 var player = new Player();
