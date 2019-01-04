@@ -1,6 +1,8 @@
 const DIRECTIONS = {
   LEFT: 'left',
-  RIGHT: 'right'
+  RIGHT: 'right',
+  UP:'up',
+  DOWN: 'down'
 };
 // Enemies our player must avoid
 var Enemy = function(startCol, startRow, options) {
@@ -38,11 +40,29 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function () {
+  this.x = 2 * 101;
+  this.y = 5 * 83 - 20;
+  this.velocity = 10;
   this.sprite = 'images/char-boy.png';
 };
 
 Player.prototype.update = function(dt){
+  if (this.direction === DIRECTIONS.LEFT) {
+    this.x = this.x - this.velocity * dt;
+  }
+  if (this.direction === DIRECTIONS.RIGHT) {
+    this.x = this.x + this.velocity * dt;
+  }
+  if (this.direction === DIRECTIONS.UP) {
+    this.y = this.y - this.velocity * dt;
+  }
+  if (this.direction === DIRECTIONS.DOWN) {
+    this.y = this.y + this.velocity * dt;
+  }
+};
 
+Player.prototype.handleInput = function(inputDirection){
+  this.direction = inputDirection;
 };
 
 Player.prototype.render = function() {
