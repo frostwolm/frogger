@@ -112,6 +112,7 @@ Player.prototype.update = function(dt){
   }
   if (this.y < -10) {
     this.y = -10;
+    this.win();
   }
   if (this.y > CANVAS_WIDTH - Player.WIDTH + 20) {
     this.y = CANVAS_WIDTH - Player.WIDTH + 20;
@@ -123,6 +124,11 @@ Player.prototype.reset = function(){
   this.x = 2 * 101;
   this.y = 5 * 83 - 20;
   this.direction = null;
+};
+
+Player.prototype.win = function(){
+  console.log('You have reached the water! You win!');
+  this.reset();
 };
 
 Player.prototype.handleInput = function(inputDirection){
