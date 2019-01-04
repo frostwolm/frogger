@@ -21,8 +21,8 @@ var Enemy = function(startCol, startRow, options) {
     this.sprite = 'images/enemy-bug.png';
 };
 
-Enemy.HEIGHT = 101;
-Enemy.WIDTH = 171;
+Enemy.HEIGHT = 171;
+Enemy.WIDTH = 101;
 
 Enemy.MIN_VELOCITY = 20;
 Enemy.MAX_VELOCITY = 120;
@@ -42,6 +42,8 @@ Enemy.prototype.update = function(dt) {
     if (this.x < -Enemy.WIDTH || this.x > CANVAS_WIDTH) {
         this.reset();
     }
+
+    this.checkCollisions(player);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -64,7 +66,16 @@ Enemy.prototype.setRndVelocity = function() {
     randVel = Math.round(randVel);
     this.velocity = randVel;
     return this.velocity;
-  }
+};
+
+Enemy.prototype.checkCollisions = function(player) {
+    let collisionX = Math.abs((this.x + Enemy.WIDTH) - (player.x + Player.WIDTH)) < Enemy.WIDTH/2;
+    let collisionY = Math.abs((this.y + Enemy.HEIGHT) - (player.y + Player.HEIGHT)) < Enemy.HEIGHT/2;
+
+    if (collisionX && collisionY) {
+      player.reset();
+    }
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -75,6 +86,9 @@ var Player = function () {
   this.velocity = 50;
   this.sprite = 'images/char-boy.png';
 };
+
+Player.HEIGHT = 171;
+Player.WIDTH = 101;
 
 Player.prototype.update = function(dt){
   if (this.direction === DIRECTIONS.LEFT) {
@@ -89,6 +103,13 @@ Player.prototype.update = function(dt){
   if (this.direction === DIRECTIONS.DOWN) {
     this.y = this.y + this.velocity * dt;
   }
+};
+
+
+Player.prototype.reset = function(){
+  this.x = 2 * 101;
+  this.y = 5 * 83 - 20;
+  this.direction = null;
 };
 
 Player.prototype.handleInput = function(inputDirection){
