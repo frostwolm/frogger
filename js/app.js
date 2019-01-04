@@ -4,18 +4,28 @@ const DIRECTIONS = {
   UP:'up',
   DOWN: 'down'
 };
+
+const CANVAS_WIDTH = 505;
+const CANVAS_HEIGHT = 606;
+
 // Enemies our player must avoid
 var Enemy = function(startCol, startRow, options) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = startCol * 101;
     this.y = startRow * 83 - 20;
-    this.velocity = options.velocity || 1;
+    this.velocity = options.velocity || this.setRndVelocity();
     this.direction = options.direction || DIRECTIONS.RIGHT;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
+
+Enemy.HEIGHT = 101;
+Enemy.WIDTH = 171;
+
+Enemy.MIN_VELOCITY = 20;
+Enemy.MAX_VELOCITY = 120;
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -29,6 +39,9 @@ Enemy.prototype.update = function(dt) {
     if (this.direction === DIRECTIONS.RIGHT) {
       this.x = this.x + this.velocity * dt;
     }
+    if (this.x < -Enemy.WIDTH || this.x > CANVAS_WIDTH) {
+        this.reset();
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -36,13 +49,30 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+Enemy.prototype.reset = function(velocity) {
+  this.setRndVelocity();
+  if (this.direction === DIRECTIONS.LEFT) {
+    this.x = CANVAS_WIDTH + Enemy.WIDTH;
+  }
+  if (this.direction === DIRECTIONS.RIGHT) {
+    this.x = -Enemy.WIDTH;
+  };
+};
+
+Enemy.prototype.setRndVelocity = function() {
+    var randVel = Enemy.MIN_VELOCITY - 0.5 + Math.random() * (Enemy.MAX_VELOCITY - Enemy.MIN_VELOCITY + 1)
+    randVel = Math.round(randVel);
+    this.velocity = randVel;
+    return this.velocity;
+  }
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function () {
   this.x = 2 * 101;
   this.y = 5 * 83 - 20;
-  this.velocity = 10;
+  this.velocity = 50;
   this.sprite = 'images/char-boy.png';
 };
 
@@ -73,14 +103,12 @@ Player.prototype.render = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(0, 1, {
-  velocity: 1,
+  velocity: 50,
   direction: DIRECTIONS.RIGHT
 }),
 new Enemy(0, 2, {
-  velocity: 2,
   direction: DIRECTIONS.RIGHT
 }),new Enemy(0, 3, {
-  velocity: 3,
   direction: DIRECTIONS.RIGHT
 })];
 var player = new Player();
