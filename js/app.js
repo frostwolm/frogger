@@ -73,7 +73,7 @@ Enemy.prototype.checkCollisions = function(player) {
     let collisionY = Math.abs((this.y + Enemy.HEIGHT) - (player.y + Player.HEIGHT)) < Enemy.HEIGHT/2;
 
     if (collisionX && collisionY) {
-      player.reset();
+      player.dead();
     }
 };
 
@@ -126,8 +126,13 @@ Player.prototype.reset = function(){
   this.direction = null;
 };
 
+Player.prototype.dead = function(){
+  alert('You ate bugs! You lose! :(');
+  this.reset();
+};
+
 Player.prototype.win = function(){
-  console.log('You have reached the water! You win!');
+  alert('You have reached the water! You win!');
   this.reset();
 };
 
