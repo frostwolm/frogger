@@ -142,14 +142,17 @@ Player.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(0, 1, {
-  direction: DIRECTIONS.RIGHT
-}),
-new Enemy(0, 2, {
-  direction: DIRECTIONS.RIGHT
-}),new Enemy(0, 3, {
-  direction: DIRECTIONS.RIGHT
-})];
+var allEnemies = [
+  new Enemy(0, 1, {
+    direction: DIRECTIONS.RIGHT
+  }),
+  new Enemy(0, 2, {
+    direction: DIRECTIONS.RIGHT
+  }),
+  new Enemy(0, 3, {
+    direction: DIRECTIONS.RIGHT
+  })
+];
 var player = new Player();
 
 
