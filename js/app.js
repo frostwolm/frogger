@@ -7,6 +7,8 @@ const DIRECTIONS = {
 
 const CANVAS_WIDTH = 505;
 const CANVAS_HEIGHT = 606;
+const CANVAS_CELL_HEIGHT = 101;
+const CANVAS_CELL_WIDTH = 83;
 
 // Enemies our player must avoid
 var Enemy = function(startCol, startRow, options) {
@@ -81,8 +83,11 @@ Enemy.prototype.checkCollisions = function(player) {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function () {
-  this.x = 2 * 101;
-  this.y = 5 * 83 - 20;
+  this.x = 2 * CANVAS_CELL_HEIGHT;
+  /* 20 is not magic number!
+  it exists for the alignment and depends on the specific character sprite
+  (select character not yet implemented feature)*/
+  this.y = 5 * CANVAS_CELL_WIDTH - 20; 
   this.velocity = 50;
   this.sprite = 'images/char-boy.png';
 };
