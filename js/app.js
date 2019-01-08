@@ -77,7 +77,7 @@ Enemy.prototype.checkCollisions = function() {
     let collisionY = Math.abs((this.y + Enemy.HEIGHT) - (sub.y + Player.HEIGHT)) < Enemy.HEIGHT/2;
 
     if (collisionX && collisionY) {
-      sub.dead();
+      sub.doWhenCollision();
     }
 };
 
@@ -131,6 +131,10 @@ Player.prototype.reset = function(){
   this.x = 2 * 101;
   this.y = 5 * 83 - 20;
   this.direction = null;
+};
+
+Player.prototype.doWhenCollision = function(){
+  this.dead();
 };
 
 Player.prototype.dead = function(){
