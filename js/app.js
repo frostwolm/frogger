@@ -11,11 +11,12 @@ const CANVAS_CELL_HEIGHT = 101;
 const CANVAS_CELL_WIDTH = 83;
 
 // Enemies our player must avoid
-var Enemy = function(startCol, startRow, options) {
+var Enemy = function(startCol, startRow, collisionSubject, options) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = startCol * 101;
     this.y = startRow * 83 - 20;
+    this.collisionSubject = collisionSubject;
     this.velocity = options.velocity || this.setRndVelocity();
     this.direction = options.direction || DIRECTIONS.RIGHT;
     // The image/sprite for our enemies, this uses
@@ -45,7 +46,7 @@ Enemy.prototype.update = function(dt) {
         this.reset();
     }
 
-    this.checkCollisions(player);
+    this.checkCollisions();
 };
 
 // Draw the enemy on the screen, required method for game
@@ -70,12 +71,13 @@ Enemy.prototype.setRndVelocity = function() {
     return this.velocity;
 };
 
-Enemy.prototype.checkCollisions = function(player) {
-    let collisionX = Math.abs((this.x + Enemy.WIDTH) - (player.x + Player.WIDTH)) < Enemy.WIDTH/2;
-    let collisionY = Math.abs((this.y + Enemy.HEIGHT) - (player.y + Player.HEIGHT)) < Enemy.HEIGHT/2;
+Enemy.prototype.checkCollisions = function() {
+    let sub = this.collisionSubject;
+    let collisionX = Math.abs((this.x + Enemy.WIDTH) - (sub.x + Player.WIDTH)) < Enemy.WIDTH/2;
+    let collisionY = Math.abs((this.y + Enemy.HEIGHT) - (sub.y + Player.HEIGHT)) < Enemy.HEIGHT/2;
 
     if (collisionX && collisionY) {
-      player.dead();
+      sub.dead();
     }
 };
 
@@ -87,7 +89,7 @@ var Player = function () {
   /* 20 is not magic number!
   it exists for the alignment and depends on the specific character sprite
   (select character not yet implemented feature)*/
-  this.y = 5 * CANVAS_CELL_WIDTH - 20; 
+  this.y = 5 * CANVAS_CELL_WIDTH - 20;
   this.velocity = 50;
   this.sprite = 'images/char-boy.png';
 };
@@ -152,18 +154,18 @@ Player.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+var player = new Player();
 var allEnemies = [
-  new Enemy(0, 1, {
+  new Enemy(0, 1, player, {
     direction: DIRECTIONS.RIGHT
   }),
-  new Enemy(0, 2, {
+  new Enemy(0, 2, player, {
     direction: DIRECTIONS.RIGHT
   }),
-  new Enemy(0, 3, {
+  new Enemy(0, 3, player, {
     direction: DIRECTIONS.RIGHT
   })
 ];
-var player = new Player();
 
 
 // This listens for key presses and sends the keys to your
